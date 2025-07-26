@@ -10,6 +10,7 @@ const app = express();
 
 // 2. Middleware to parse JSON bodies
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 const { signUp}=require("./actions")
 app.post("/signup",signUp)
 
@@ -24,28 +25,38 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// 5. Configure Passport's local strategy
 passport.use(new LocalStrategy(
-  { usernameField: "email" }, // Use "email" instead of default "username"
+  { usernameField: "email" },
   async (email, password, done) => {
     try {
-      // 5a. Find the user in the database by email
+      console.log("Attempting login with email:", email);
       const result = await pool.query('SELECT * FROM "Users" WHERE email = $1', [email]);
       const user = result.rows[0];
+      
+      console.log("User found:", user ? "Yes" : "No");
+      if (user) {
+        console.log("User status:", user.status);
+      }
+      
       if (!user) {
-        // 5b. If user not found, authentication fails
         return done(null, false, { message: "Incorrect email." });
       }
-      // 5c. Compare the provided password with the hashed password in DB
+      
       const isMatch = await bcrypt.compare(password, user.password);
+      console.log("Password match:", isMatch);
+      
       if (!isMatch) {
-        // 5d. If password does not match, authentication fails
         return done(null, false, { message: "Incorrect password." });
       }
-      // 5e. If everything is OK, return the user object
+      
+      // if (!(user.status == true)) {
+      //   console.log("User status check failed");
+      //   return done(null, false, { message: "user is not a member" });
+      // }
+      
       return done(null, user);
     } catch (err) {
-      // 5f. Handle errors
+      console.log("Error:", err);
       return done(err);
     }
   }
@@ -71,10 +82,12 @@ passport.deserializeUser(async (id, done) => {
 app.get("/",(req,res)=>{
   res.render(__dirname+"/views/app.ejs")
 })
-app.post("/login", passport.authenticate("local"), (req, res) => {
-  // If authentication succeeds, this handler runs
+app.post("/login", (req, res, next) => {
+  console.log("Request body:", req.body);
+  console.log("Request headers:", req.headers);
+  next(); // Pass control to passport.authenticate
+}, passport.authenticate("local"), (req, res) => {
   res.json({ message: "Logged in successfully!", user: req.user });
-  alert(res.message)
 });
 
 // 9. Protected route example

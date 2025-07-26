@@ -17,6 +17,7 @@ export async function signUp(req, res) {
     }
      // 2. Extract data from the request body (not query)
     const { firstname, email, password, status } = req.body;
+    console.log(firstname, email, password, status)
 
     try {
       
@@ -28,7 +29,7 @@ export async function signUp(req, res) {
         const query = `
             INSERT INTO "Users" (firstname, email, password, status) 
             VALUES ($1, $2, $3, $4) 
-            RETURNING id, email, created_at;
+            RETURNING id, email;
         `;
         const values = [firstname, email, hashedPassword, status || true];
 
