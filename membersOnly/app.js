@@ -11,7 +11,7 @@ const app = express();
 // 2. Middleware to parse JSON bodies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const { signUp}=require("./actions")
+const { signUp}=require("./actions.js")
 app.post("/signup",signUp)
 
 // 3. Set up session middleware (required for persistent login sessions)

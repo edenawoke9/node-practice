@@ -1,7 +1,7 @@
 import express from "express";
 import { hash } from "bcryptjs";
 import { body, validationResult } from "express-validator";
-import { pool } from "./storage/pool.js";
+import { pool } from "../../membersOnly/storage/pool.js";
 const app=express()
 
 
