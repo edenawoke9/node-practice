@@ -1,0 +1,22 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h1>Welcome to weekly blog</h1>
+        <script>
+            fetch("http://localhost:3000/blogs")
+            .then(response=>response.json())
+            .then(data=>{
+                console.log(data||"no blogs found")
+            })
+            .catch(error=>{
+                console.error("Error fetching blogs:", error)})
+        </script>
+        
+    </div>
+</body>
+</html>
