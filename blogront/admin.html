@@ -6,16 +6,47 @@
 </head>
 <body>
     <h1>HI ED, Create your blog here</h1>
-    <form action="/create" method="post">
-        <input type="text" name="title" placeholder="title">
-        <input type="text" name="body" placeholder="body">
+    <form onsubmit="event.preventDefault(); createBlog();">
+        <input type="text" name="title" id="title" placeholder="title">
+        <input type="text" name="body" id="body" placeholder="body">
         <button type="submit">Create</button>
     </form>
-    <form action="/delete" method="delete"><button type="submit">Delete</button></form>
+    <form onsubmit="deleteBlog"><button type="submit">Delete</button></form>
     <form action="/update" method="put">
         <input type="text" name="title" placeholder="title">
         <input type="text" name="body" placeholder="body">
         <button type="submit">Update</button></form>
+    <script>
+       function createBlog(){
+            const title = document.getElementById("title").value;
+            const body = document.getElementById("body").value;
+            console.log(title, body);
+            
+            fetch("http://localhost:3000/create", {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                method: "POST",
+                body: JSON.stringify({title: title, body: body})
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            });
+        }
+        function deleteBlog(){
+            const id=document.getElementById("id").value;
+          
+            fetch("http://localhost:3000/delete",{
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                method:"DELETE",
+                body:JSON.stringify({id:id})
+            })
+            .then(response=>response.json())
+        }
+    </script>
   
 </body>
 </html>

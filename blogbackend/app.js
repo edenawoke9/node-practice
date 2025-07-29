@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { getBlogs, createBlog, deleteBlog, updateBlog } from './controllers/actions.js';
+import router from "./routes/route.js";
 
 const app = express();
 
@@ -12,11 +12,7 @@ app.use(cors({
 }));
 
 // Routes
-app.get('/blogs', getBlogs);
-app.post('/blogs', createBlog);
-app.delete('/blogs/:id', deleteBlog);
-app.put('/blogs/:id', updateBlog);
-
+app.use("/",router);
 app.listen(3000, () => {
     console.log('Server running on port 3000');
 });

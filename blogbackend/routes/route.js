@@ -1,12 +1,12 @@
 import express from "express";
 import { createBlog, getBlogs, deleteBlog, updateBlog, patchBlog } from "../controllers/actions.js";
 
-const app=express();
+const router=express.Router();
 
-app.get("/blogs",getBlogs);
-app.post("/create",createBlog);
-app.delete("/delete",deleteBlog);
-app.put("/update",updateBlog);
-app.patch("/patch",patchBlog);
+router.get("/blogs",getBlogs);
+router.post("/create",createBlog);
+router.delete("/delete",deleteBlog);
+router.put("/update",updateBlog);
+router.patch("/patch",patchBlog);
 
-export default app;
+export default router;
