@@ -5,7 +5,7 @@ const router=express.Router();
 
 router.get("/blogs",getBlogs);
 router.post("/create",createBlog);
-router.delete("/delete",deleteBlog);
+router.delete("/delete/:id",deleteBlog);
 router.put("/update",updateBlog);
 router.patch("/patch",patchBlog);
 
